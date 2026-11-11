@@ -286,8 +286,8 @@ export default function Motion() {
       // (bem maior que no wheel suavizado) e a tela é estreita, então o mesmo ganho fica rápido demais.
       // Lá usamos ganho e teto menores e suavizamos o valor para não dar trancos.
       const touch = matchMedia('(pointer: coarse)').matches;
-      const gain = touch ? 8 : 45;
-      const cap = touch ? 220 : 900;
+      const gain = touch ? 5 : 45;
+      const cap = touch ? 140 : 900;
       let vSmooth = 0;
       const tickMarquee = (_t: number, dt: number) => {
         const raw = lenis.velocity || 0;
