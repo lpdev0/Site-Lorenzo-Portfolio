@@ -282,13 +282,22 @@ export default function Motion() {
         const group = track.firstElementChild as HTMLElement;
         return { track, group, x: 0, dir: -1 };
       });
+      // No toque o scroll é nativo: a "velocidade" do Lenis vira o salto entre eventos de scroll
+      // (bem maior que no wheel suavizado) e a tela é estreita, então o mesmo ganho fica rápido demais.
+      // Lá usamos ganho e teto menores e suavizamos o valor para não dar trancos.
+      const touch = matchMedia('(pointer: coarse)').matches;
+      const gain = touch ? 8 : 45;
+      const cap = touch ? 220 : 900;
+      let vSmooth = 0;
       const tickMarquee = (_t: number, dt: number) => {
-        const v = lenis.velocity || 0;
+        const raw = lenis.velocity || 0;
+        vSmooth = touch ? vSmooth + (raw - vSmooth) * Math.min(1, dt / 120) : raw;
+        const v = vSmooth;
         marquees.forEach((m) => {
-          if (v !== 0) m.dir = v > 0 ? -1 : 1;
+          if (Math.abs(v) > 0.05) m.dir = v > 0 ? -1 : 1;
           const w = m.group.offsetWidth;
           if (!w) return;
-          const speed = (60 + Math.min(Math.abs(v) * 45, 900)) * (dt / 1000);
+          const speed = (60 + Math.min(Math.abs(v) * gain, cap)) * (dt / 1000);
           m.x += speed * m.dir;
           if (m.x <= -w) m.x += w;
           if (m.x > 0) m.x -= w;
