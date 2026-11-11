@@ -1,5 +1,7 @@
 # lorenzo.
 
+**Site no ar:** [site-lorenzo-portfolio.vercel.app](https://site-lorenzo-portfolio.vercel.app/)
+
 Este é o meu site de portfólio. Sou o Lorenzo, web designer e desenvolvedor, e aqui mostro os projetos que fiz, os serviços que ofereço e como trabalho, do briefing ao lançamento.
 
 O site é bilíngue: português em `/` e inglês em `/en/`.
